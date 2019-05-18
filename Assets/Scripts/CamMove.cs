@@ -4,14 +4,15 @@ using UnityEngine;
 
 public class CamMove : MonoBehaviour
 {
+    [HideInInspector]
+    public float rad;
     private float phi;
     private Transform tr;
-    private float rad;
     void Start()
     {
         tr = GetComponent<Transform>();
         rad = tr.position.magnitude;
-        phi = 0; //Mathf.Atan2(tr.position.y, tr.position.x);
+        phi = Mathf.Atan2(tr.position.y, tr.position.x);
     }
 
     void Update()

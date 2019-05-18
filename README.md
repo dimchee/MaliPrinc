@@ -3,14 +3,13 @@
 #ToDo list:
 
 Sada:
-<<<<<<< HEAD
   + kretanje i skakanje :D
   + crtanje i brisanje :D
   + camera move :D
   - save lvla
   - lvl editor ?
-  - minimapa
-  - planeta view
+  + minimapa :D
+  + planeta view :D
   - planeta object
 alpha:
   - presavijanje

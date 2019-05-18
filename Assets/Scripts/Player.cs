@@ -64,5 +64,5 @@ public class Player : MonoBehaviour
     }
 
     public void Move(Vector2 vec) { input = vec; }
-    public void Jump() { if (IsGrounded()) jump = Vector2.up; }
+    public void Jump() { if (IsGrounded()) jump = rb.position.normalized; }
 }
