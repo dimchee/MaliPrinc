@@ -13,10 +13,10 @@ public static class Tools
     {
         get 
         {
-            if (Tools._mat == null)
-                Tools._mat = Resources.Load("block") 
+            if (_mat == null)
+                _mat = Resources.Load("block") 
                     as Material; 
-            return Tools._mat; 
+            return _mat; 
         }
     }
     public static bool Use(Tool t) { return  tool==t; }
