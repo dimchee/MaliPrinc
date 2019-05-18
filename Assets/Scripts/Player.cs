@@ -9,60 +9,78 @@ public class Player : MonoBehaviour
     public float onGround = 0.4F;
     public float gravity = 2.0F;
     private Rigidbody2D rb;
+    private Transform _tr;
+    private Transform tr
+    {
+        get { if(!_tr) _tr = GetComponent<Transform>(); return _tr; }
+    }
     private Vector2 input;
     private Vector2 jump;
+    private Transform cam;
 
-    void Start() { rb = GetComponent<Rigidbody2D>(); }
+    void Start() 
+    {
+        cam = GameObject.FindWithTag("MainCamera").GetComponent<Transform>();
+        rb = GetComponent<Rigidbody2D>();
+    }
+    public void Move(Vector2 vec) { input = vec; }
+    public void Jump() { jump = rb.position.normalized; }
+
     void FixedUpdate() 
     {
         rb.AddForce(
             -gravity * rb.position.normalized,
             ForceMode2D.Force
         ); // gravity
-        rb.AddForce(
-            input * speed, 
-            ForceMode2D.Force
-        ); // left right
-        rb.AddForce(
-            jump * strength,
-            ForceMode2D.Impulse
-        ); // jump
-        jump = Vector2.zero;
+        if(IsGrounded())
+        {
+            rb.AddForce(
+                input.x * speed * cam.right, 
+                ForceMode2D.Force
+            ); // left right
+            rb.AddForce(
+                jump * strength,
+                ForceMode2D.Impulse
+            ); // jump
+            jump = Vector2.zero;
+        }
     }
-
     private bool IsGrounded() 
     {
-        Debug.DrawRay(
-            rb.position + Vector2.down * 0.21f 
-                        + Vector2.left * 0.15f,
-            Vector2.down * onGround,
-            Color.red
-        );
-        Debug.DrawRay(
-            rb.position + Vector2.down  * 0.21f 
-                        + Vector2.right * 0.15f, 
-            Vector2.down * onGround,
-            Color.red
-        );
-        RaycastHit2D hit1 = Physics2D.Raycast(
-            rb.position + Vector2.down  * 0.21f 
-                        + Vector2.right * 0.15f, 
-            Vector2.down, 
-            onGround
-        );
-        RaycastHit2D hit2 = Physics2D.Raycast(
-            rb.position + Vector2.down * 0.21f 
-                        + Vector2.left * 0.15f,
-            Vector2.down, 
-            onGround
-        );
-
-
-        if(hit1.collider != null) return  true;
-        if(hit2.collider != null) return  true;
-        else                      return false;
+        Vector2[] bas = {tr.up, -tr.up};
+        Vector2[] vec = {tr.right, -tr.right};
+        foreach(Vector2 a in bas) foreach (Vector2 b in vec)
+            if(Physics2D.Raycast(
+                rb.position + a * 0.21f 
+                            + b * 0.15f,
+                a, onGround
+            ).collider != null) return  true;
+        foreach(Vector2 a in vec) foreach (Vector2 b in bas)
+            if(Physics2D.Raycast(
+                rb.position + a * 0.21f 
+                            + b * 0.15f,
+                a, onGround
+            ).collider != null) return  true;
+        return false;
     }
-
-    public void Move(Vector2 vec) { input = vec; }
-    public void Jump() { if (IsGrounded()) jump = rb.position.normalized; }
+    void OnDrawGizmosSelected()
+    {
+        Vector2[] bas = {tr.up, -tr.up};
+        Vector2[] vec = {tr.right, -tr.right};
+        Vector2 pos  = tr.position;
+        foreach(Vector2 a in bas) foreach (Vector2 b in vec)
+            Debug.DrawRay(
+                pos + a * 0.21f 
+                    + b * 0.15f,
+                a*onGround, 
+                Color.red
+            );
+         foreach(Vector2 a in vec) foreach (Vector2 b in bas)
+            Debug.DrawRay(
+                pos + a * 0.21f 
+                    + b * 0.15f,
+                a*onGround, 
+                Color.red
+            );
+    }
 }

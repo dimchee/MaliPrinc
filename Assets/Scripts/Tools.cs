@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 public enum Tool { eraser, ground };
 
@@ -28,6 +29,8 @@ public static class Tools
     public static void Draw(Vector3[] vec, float width)
     {
         if(!Use(Tool.ground)) return;
+        Loader.Update(vec, width, tool);
+
         var vert = new Vector3[2 * vec.Length];
         var uv   = new Vector2[2 * vec.Length];
         var col  = new Vector2[2 * vec.Length]; 

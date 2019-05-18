@@ -1,16 +1,24 @@
 # MaliPrinc
 
-#ToDo list:
+kontrole (detalje mozete naci u Assets/Scripts/Controller.cs)
+  - E brisanje
+  - Q crtanje
+  - P save lvl
+  - T kamera levo
+  - Y (Z) kamera desno
+  - space skok
 
-Sada:
+# Uradjeno:
   + kretanje i skakanje :D
   + crtanje i brisanje :D
   + camera move :D
-  - save lvla
-  - lvl editor ?
+  + save lvla :D
   + minimapa :D
   + planeta view :D
-  - planeta object
+  + planeta object :D
+
+# ToDo list:
+  - lvl editor
 alpha:
   - presavijanje
   - prica

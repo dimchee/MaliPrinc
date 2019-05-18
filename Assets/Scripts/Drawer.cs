@@ -6,8 +6,11 @@ using System.IO;
 
 public class Line : MonoBehaviour
 {
-    private LineRenderer line;
-    void Start() { line = GetComponent<LineRenderer>(); }
+    private LineRenderer _line;
+    private LineRenderer line
+    {
+        get { if(!_line) _line = GetComponent<LineRenderer>(); return _line; }
+    }
     public void Add(Vector2 pos)
     {
         if(line) line.SetPosition(line.positionCount++, pos);
@@ -68,20 +71,7 @@ public class Drawer : MonoBehaviour
         rend.colorGradient = grad;
         return line;
     }
-
-    void Start()
-    {
-        //string path = "Assets/MaliPrinc.gcode";
-        //gcode = System.IO.File.ReadAllLines(@path);
-    }
-
-    private Line Aline;
     private GameObject Mline;
-
-    private static float toFloat(string s)
-    {
-        return float.Parse(s.Substring(1))/2000F;
-    }
 
     void Update () 
     {
@@ -93,22 +83,7 @@ public class Drawer : MonoBehaviour
         if(Input.GetMouseButtonUp(0))
         {
             var vec = Mline.GetComponent<Line>().Vert();
-            Tools.Draw(vec, 0.1F); Object.Destroy(Mline);
+            Object.Destroy(Mline); Tools.Draw(vec, 0.1F); 
         }
-
-        /*
-        if(Time.time > time && cur < gcode.Length)  
-        {
-            string[] cmd = gcode[cur++].Split(' ');
-            if(cmd[0] == "M300")
-                Aline = MakeLine("auto", mPos);
-            if(cmd[0] == "G1")
-            {
-                Aline.GetComponent<Line>().Add(toFloat(cmd[1]), toFloat(cmd[2]));
-                //time += toFloat(cmd[3])/100.0F;
-            } 
-            //if(cmd[0] == "G4") time += toFloat(cmd[1])/100.0F;
-        }
-        */
     }
 }
