@@ -3,8 +3,9 @@
 #ToDo list:
 
 Sada:
-  + kretanje i skakanje
-  + crtanje i brisanje
+  + kretanje i skakanje :D
+  + crtanje i brisanje :D
+  + camera move :D
   - save lvla
   ? lvl editor
   - minimapa

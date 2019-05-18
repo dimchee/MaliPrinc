@@ -19,7 +19,7 @@ public class Controller : MonoBehaviour
             player.Jump();
         player.Move(new Vector2(
             Input.GetAxisRaw("Horizontal"), 
-            Input.GetAxisRaw("Vertical")
+            0 //Input.GetAxisRaw("Vertical")
         ));
     }
 }

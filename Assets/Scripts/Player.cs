@@ -4,24 +4,29 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public float speed = 1.0f;
-    public float strength = 1.0f;
-    public float onGround = 0.4f;
+    public float speed = 1.0F;
+    public float strength = 1.0F;
+    public float onGround = 0.4F;
+    public float gravity = 2.0F;
     private Rigidbody2D rb;
     private Vector2 input;
     private Vector2 jump;
 
     void Start() { rb = GetComponent<Rigidbody2D>(); }
     void FixedUpdate() 
-    { 
+    {
+        rb.AddForce(
+            -gravity * rb.position.normalized,
+            ForceMode2D.Force
+        ); // gravity
         rb.AddForce(
             input * speed, 
             ForceMode2D.Force
-        );
+        ); // left right
         rb.AddForce(
             jump * strength,
             ForceMode2D.Impulse
-        );
+        ); // jump
         jump = Vector2.zero;
     }
 
