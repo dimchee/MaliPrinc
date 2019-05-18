@@ -37,6 +37,7 @@ public static class Loader
                 float.Parse(s[2])
             ));
         }
+        Tools.Draw(vec.ToArray(), width);
     }
     static public void Save(string name) 
     {
