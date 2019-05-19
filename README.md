@@ -19,9 +19,16 @@ kontrole (detalje mozete naci u Assets/Scripts/Controller.cs)
 
 # ToDo list:
   - lvl editor
-alpha:
-  - presavijanje
+  - portali ? 
+  - konopci
+  - UI
+  - inventory
+  - manji itemi
+# Alpha:
+  - presavijanje x
   - prica
   - dodatne mehanike
-beta:
+  - intro
+# Beta:
 - vatra
+- muzika
