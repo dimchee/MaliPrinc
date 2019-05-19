@@ -16,16 +16,16 @@ public class Terrain : MonoBehaviour
             return _mat; 
         }
     }
-    Vector3 disp(Vector3 vec)
+    Vector3 disp(Vector3 vec, float phi)
     {
-        return vec;
+        return vec *  (30 + Mathf.Sin(phi*10)) / 30;
     }
     void Start()
     {
         List<Vector3> v = new List<Vector3>();
         List<int> tri = new List<int>();
         v.Add(Vector3.zero); for(float phi=0F; phi<2*Mathf.PI; phi+=0.01F)
-            v.Add(disp(new Vector3(rad*Mathf.Cos(phi), rad*Mathf.Sin(phi))));
+            v.Add(disp(new Vector3(rad*Mathf.Cos(phi), rad*Mathf.Sin(phi)), phi));
         v.Add(v[1]);
         Vector3[] vert = v.ToArray();
         Vector2[] col  = new Vector2[vert.Length];
@@ -54,6 +54,6 @@ public class Terrain : MonoBehaviour
 
         block.GetComponent<MeshFilter>().mesh = mesh;
         block.GetComponent<MeshRenderer>().material = mat;
-        block.GetComponent<PolygonCollider2D>().SetPath(0, col); 
+        block.GetComponent<PolygonCollider2D>().SetPath(0, col);
     }
 }
