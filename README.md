@@ -16,11 +16,13 @@ kontrole (detalje mozete naci u Assets/Scripts/Controller.cs)
   + minimapa :D
   + planeta view :D
   + planeta object :D
+  + smena dan i noc :D
+  + lvl loading :D
 
 # ToDo list:
   - lvl editor
   - portali ? 
-  - konopci
+  - konopci x
   - UI
   - inventory
   - manji itemi

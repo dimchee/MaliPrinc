@@ -11,7 +11,7 @@ public class Terrain : MonoBehaviour
         get 
         {
             if (_mat == null)
-                _mat = Resources.Load("block") 
+                _mat = Resources.Load("mars") 
                     as Material; 
             return _mat; 
         }
@@ -36,20 +36,24 @@ public class Terrain : MonoBehaviour
             tri.Add(i);
             tri.Add(i-1);
         }
-        //var mesh = new Mesh();
+        var mesh = new Mesh();
         var block = new GameObject(
             "Planet",
-            //typeof(MeshRenderer),
-            //typeof(MeshFilter),
+            typeof(MeshRenderer),
+            typeof(MeshFilter),
             typeof(PolygonCollider2D)
         );
 
-        //mesh.vertices = vert;
-        //mesh.triangles = tri.ToArray();
-        //mesh.uv = uv;
+        mesh.vertices = vert;
+        mesh.triangles = tri.ToArray();
+        Vector2[] uv = new Vector2[col.Length];
+        var dis = new Vector2(0.0F, 0.5F);
+        for(int i=0; i<col.Length; i++)
+            uv[i] = col[i]/40 - dis;
+        mesh.uv = uv;
 
-        //block.GetComponent<MeshFilter>().mesh = mesh;
-        //block.GetComponent<MeshRenderer>().material = mat;
+        block.GetComponent<MeshFilter>().mesh = mesh;
+        block.GetComponent<MeshRenderer>().material = mat;
         block.GetComponent<PolygonCollider2D>().SetPath(0, col); 
     }
 }
