@@ -54,13 +54,44 @@ public static class Loader
     }
     static public GameObject DrawLine(string name, Vector3[] vec, float width, Material mat, Transform p = null)
     {
+        var block = new GameObject(
+            name,
+            typeof(MeshRenderer),
+            typeof(MeshFilter),
+            typeof(PolygonCollider2D),
+            typeof(Eraser)
+        );
+
+        Vector2[] col;
+        block.GetComponent<MeshFilter>().mesh = MakeMesh(vec, width, out col);
+        block.GetComponent<MeshRenderer>().material = mat;
+        block.GetComponent<PolygonCollider2D>().SetPath(0, col);
+        block.GetComponent<Transform>().SetParent(p);
+        block.layer = 10;
+        return block;
+    }
+    static public Mesh MakeMesh(Vector3[] vec, float width, out Vector2[] col)
+    {
         var vert = new Vector3[2 * vec.Length];
         var uv   = new Vector2[2 * vec.Length];
-        var col  = new Vector2[2 * vec.Length]; 
+        col  = new Vector2[2 * vec.Length]; 
         var tri  = new int[6 * vec.Length - 6];
+        if(vec.Length==1) return null;
         Vector3 norm; for(int i=0; i<vec.Length; i++)
         {
-            if(i==0 || i+1==vec.Length) norm = Vector3.down;
+            if(
+                i!=0 && 
+                i!=vec.Length-1 && 
+                Vector3.Angle(vec[i]-vec[i-1], vec[i+1]-vec[i]) > 45F 
+            ) return null;
+            if(i+1==vec.Length) norm = new Vector3(
+                 (vec[i]-vec[i-1]).y,
+                -(vec[i]-vec[i-1]).x
+            ).normalized;
+            else if(i==0) norm = new Vector3(
+                 (vec[i+1]-vec[i]).y,
+                -(vec[i+1]-vec[i]).x
+            ).normalized;
             else norm = new Vector3(
                  (vec[i+1]-vec[i-1]).y, 
                 -(vec[i+1]-vec[i-1]).x
@@ -87,22 +118,9 @@ public static class Loader
         }
 
         var mesh = new Mesh();
-        var block = new GameObject(
-            name,
-            typeof(MeshRenderer),
-            typeof(MeshFilter),
-            typeof(PolygonCollider2D),
-            typeof(Eraser)
-        );
-
         mesh.vertices = vert;
         mesh.triangles = tri;
         mesh.uv = uv;
-
-        block.GetComponent<MeshFilter>().mesh = mesh;
-        block.GetComponent<MeshRenderer>().material = mat;
-        block.GetComponent<PolygonCollider2D>().SetPath(0, col); 
-        block.GetComponent<Transform>().SetParent(p);
-        return block;
+        return mesh;
     }
 }

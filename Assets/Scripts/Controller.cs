@@ -8,8 +8,8 @@ public class Controller : MonoBehaviour
     private CamMove cam;
     void Start()
     {
-        player = GameObject.FindWithTag("Player").GetComponent<Player>();
-        cam = GameObject.FindWithTag("MainCamera").GetComponent<CamMove>();
+        player = GetComponent<Player>();
+        cam = Camera.main.GetComponent<CamMove>();
     }
     void Update()
     {

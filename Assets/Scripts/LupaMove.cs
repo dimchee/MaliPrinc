@@ -10,7 +10,7 @@ public class LupaMove : MonoBehaviour
     void Start()
     {
         tr = GetComponent<Transform>();
-        cam = GameObject.FindWithTag("MainCamera").GetComponent<Transform>();
+        cam = Camera.main.GetComponent<Transform>();
         dis = cam.position - tr.position;
     }
 

@@ -4,15 +4,24 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [Tooltip("left/right speeed")]
     public float speed = 1.0F;
+    [Tooltip("Jump strength")]
     public float strength = 1.0F;
     public float onGround = 0.4F;
     public float gravity = 2.0F;
+    [Tooltip("Not used yet...")]
+    public float balance = 0.5F;
+    private GameObject _pl;
+    private GameObject player
+    {
+        get { if(!_pl) _pl = GameObject.FindWithTag("Player"); return _pl; }
+    }
     private Rigidbody2D rb;
     private Transform _tr;
     private Transform tr
     {
-        get { if(!_tr) _tr = GetComponent<Transform>(); return _tr; }
+        get { if(!_tr) _tr = player.GetComponent<Transform>(); return _tr; }
     }
     private Vector2 input;
     private Vector2 jump;
@@ -20,18 +29,19 @@ public class Player : MonoBehaviour
 
     void Start() 
     {
-        cam = GameObject.FindWithTag("MainCamera").GetComponent<Transform>();
-        rb = GetComponent<Rigidbody2D>();
+        cam = Camera.main.GetComponent<Transform>();
+        rb = player.GetComponent<Rigidbody2D>();
     }
     public void Move(Vector2 vec) { input = vec; }
     public void Jump() { jump = rb.position.normalized; }
 
     void FixedUpdate() 
     {
+        rb.MoveRotation(Vector3.SignedAngle(Vector3.up, rb.position, Vector3.forward));
         rb.AddForce(
-            -gravity * rb.position.normalized,
+            -gravity * rb.position.normalized, 
             ForceMode2D.Force
-        ); // gravity
+        );// gravity
         if(IsGrounded())
         {
             rb.AddForce(

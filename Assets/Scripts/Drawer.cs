@@ -24,12 +24,10 @@ public class Line : MonoBehaviour
         return vec;
     }
 }
-public class Drawer : MonoBehaviour
+public static class Drawer
 {
-
-    private Vector2 mPos;
-    private Material _mat;
-    private Material mat
+    private static Material _mat;
+    private static Material mat
     {
         get 
         {
@@ -39,9 +37,9 @@ public class Drawer : MonoBehaviour
             return _mat; 
         }
     }
-    private string[] gcode;
+    private static string[] gcode;
 
-    private GameObject MakeLine(string name, Vector2 pos)
+    public static GameObject MakeLine(string name, Vector2 pos)
     {
         var line = new GameObject(
             name,
@@ -71,11 +69,10 @@ public class Drawer : MonoBehaviour
         rend.colorGradient = grad;
         return line;
     }
-    private GameObject Mline;
+    private static GameObject Mline;
 
-    void Update () 
+    public static void Update(Vector2 mPos) 
     {
-        mPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         if(Input.GetMouseButtonDown(0))
             Mline = MakeLine("mouse", mPos);
         if(Input.GetMouseButton(0))

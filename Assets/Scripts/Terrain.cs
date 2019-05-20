@@ -18,7 +18,7 @@ public class Terrain : MonoBehaviour
     }
     Vector3 disp(Vector3 vec, float phi)
     {
-        return vec *  (30 + Mathf.Sin(phi*10)) / 30;
+        return vec *  (50 + Mathf.Sin(phi*10)) / 50;
     }
     void Start()
     {
@@ -37,7 +37,7 @@ public class Terrain : MonoBehaviour
             tri.Add(i-1);
         }
         var mesh = new Mesh();
-        var block = new GameObject(
+        var planet = new GameObject(
             "Planet",
             typeof(MeshRenderer),
             typeof(MeshFilter),
@@ -52,8 +52,9 @@ public class Terrain : MonoBehaviour
             uv[i] = col[i]/40 - dis;
         mesh.uv = uv;
 
-        block.GetComponent<MeshFilter>().mesh = mesh;
-        block.GetComponent<MeshRenderer>().material = mat;
-        block.GetComponent<PolygonCollider2D>().SetPath(0, col);
+        planet.GetComponent<MeshFilter>().mesh = mesh;
+        planet.GetComponent<MeshRenderer>().material = mat;
+        planet.GetComponent<PolygonCollider2D>().SetPath(0, col);
+        planet.layer = 10;
     }
 }
