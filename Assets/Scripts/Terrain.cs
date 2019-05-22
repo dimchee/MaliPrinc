@@ -55,6 +55,7 @@ public class Terrain : MonoBehaviour
         planet.GetComponent<MeshFilter>().mesh = mesh;
         planet.GetComponent<MeshRenderer>().material = mat;
         planet.GetComponent<PolygonCollider2D>().SetPath(0, col);
+        planet.GetComponent<PolygonCollider2D>().sharedMaterial = Resources.Load<PhysicsMaterial2D>("planet"); 
         planet.layer = 10;
     }
 }
