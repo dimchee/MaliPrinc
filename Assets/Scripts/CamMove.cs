@@ -6,6 +6,7 @@ public class CamMove : MonoBehaviour
 {
     [HideInInspector]
     public float rad;
+    [HideInInspector]
     public float phi;
     private Transform tr;
     void Start()

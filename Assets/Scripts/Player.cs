@@ -12,6 +12,7 @@ public class Player : MonoBehaviour
     public float gravity = 2.0F;
     [Tooltip("Not used yet...")]
     public float balance = 0.5F;
+    public float camMoveRad = 3.0F;
     private GameObject _pl;
     private GameObject player
     {
@@ -26,11 +27,13 @@ public class Player : MonoBehaviour
     private Vector2 input;
     private Vector2 jump;
     private Transform cam;
+    private CamMove camMove;
 
     void Start() 
     {
         cam = Camera.main.GetComponent<Transform>();
         rb = player.GetComponent<Rigidbody2D>();
+        camMove = Camera.main.GetComponent<CamMove>();
     }
     public void Move(Vector2 vec) { input = vec; }
     public void Jump() { jump = rb.position.normalized; }
@@ -54,42 +57,30 @@ public class Player : MonoBehaviour
             ); // jump
             jump = Vector2.zero;
         }
+        camMove.phi += 0.0001F * Mathf.Pow(Vector2.SignedAngle(cam.position, player.transform.position), 3.0F);
     }
     private bool IsGrounded() 
     {
-        Vector2[] bas = {tr.up, -tr.up};
+        Vector2 down = -tr.up;
         Vector2[] vec = {tr.right, -tr.right};
-        foreach(Vector2 a in bas) foreach (Vector2 b in vec)
+        foreach(Vector2 a in vec)
             if(Physics2D.Raycast(
-                rb.position + a * 0.21f 
-                            + b * 0.15f,
-                a, onGround
-            ).collider != null) return  true;
-        foreach(Vector2 a in vec) foreach (Vector2 b in bas)
-            if(Physics2D.Raycast(
-                rb.position + a * 0.21f 
-                            + b * 0.15f,
-                a, onGround
+                rb.position + down * 0.651f 
+                            + a * 0.15f,
+                down, onGround
             ).collider != null) return  true;
         return false;
     }
     void OnDrawGizmosSelected()
     {
-        Vector2[] bas = {tr.up, -tr.up};
+        Vector2 down = -tr.up;
         Vector2[] vec = {tr.right, -tr.right};
         Vector2 pos  = tr.position;
-        foreach(Vector2 a in bas) foreach (Vector2 b in vec)
+        foreach(Vector2 a in vec) 
             Debug.DrawRay(
-                pos + a * 0.21f 
-                    + b * 0.15f,
-                a*onGround, 
-                Color.red
-            );
-         foreach(Vector2 a in vec) foreach (Vector2 b in bas)
-            Debug.DrawRay(
-                pos + a * 0.21f 
-                    + b * 0.15f,
-                a*onGround, 
+                pos + down * 0.651f 
+                    + a * 0.15f,
+                down*onGround, 
                 Color.red
             );
     }

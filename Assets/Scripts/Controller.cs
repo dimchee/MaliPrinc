@@ -5,11 +5,13 @@ using UnityEngine;
 public class Controller : MonoBehaviour
 {
     private Player player;
+    private Fox fox;
     private CamMove cam;
     void Start()
     {
         player = GetComponent<Player>();
         cam = Camera.main.GetComponent<CamMove>();
+        fox = GetComponent<Fox>();
     }
     void Update()
     {
@@ -25,6 +27,8 @@ public class Controller : MonoBehaviour
             Loader.Save("test.lvl");
         if(Input.GetKeyDown("space"))
             player.Jump();
+        if(Input.GetKeyDown(KeyCode.LeftShift))
+            fox.Jump();
         player.Move(new Vector2(
             Input.GetAxisRaw("Horizontal"), 
             0 //Input.GetAxisRaw("Vertical")

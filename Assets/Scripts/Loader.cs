@@ -6,6 +6,11 @@ using System.IO;
 
 public static class Loader
 {
+    static private PhysicsMaterial2D _ph;
+    static private PhysicsMaterial2D ph
+    {
+        get{ if(!_ph) _ph = Resources.Load<PhysicsMaterial2D>("planet"); return _ph; }
+    }
     static string fold = "Assets/Lvls/";
     static string cur;
     static private string[] splitLine(string s)
@@ -66,6 +71,7 @@ public static class Loader
         block.GetComponent<MeshFilter>().mesh = MakeMesh(vec, width, out col);
         block.GetComponent<MeshRenderer>().material = mat;
         block.GetComponent<PolygonCollider2D>().SetPath(0, col);
+        block.GetComponent<PolygonCollider2D>().sharedMaterial = ph; 
         block.GetComponent<Transform>().SetParent(p);
         block.layer = 10;
         return block;

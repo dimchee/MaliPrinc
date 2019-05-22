@@ -5,6 +5,9 @@ using UnityEngine;
 public class Fox : MonoBehaviour
 {
     public float speed;
+    public float strength = 1.0F;
+    public float gravity = 2.0F;
+    public float jumpCD = 1.0F;
     private GameObject _fox;
     private GameObject fox
     {
@@ -16,10 +19,33 @@ public class Fox : MonoBehaviour
         get { if(!_rb) _rb = fox.GetComponent<Rigidbody2D>(); return _rb; }
     }
     void Start() {}
-
+    private float lastJump;
+    private Vector2 jump;
+    public void Jump() 
+    {
+        if(Time.time - lastJump > jumpCD)
+        {
+            jump = rb.position.normalized; 
+            lastJump=Time.time;
+        } 
+    }
     void FixedUpdate() 
     {
-        rb.velocity = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - fox.transform.position).normalized*20 * speed;
+        rb.MoveRotation(Vector3.SignedAngle(Vector3.up, rb.position, Vector3.forward));
+        rb.AddForce(
+            -gravity * rb.position.normalized, 
+            ForceMode2D.Force
+        );// gravity
+        rb.AddForce(
+            (Camera.main.ScreenToWorldPoint(Input.mousePosition) - fox.transform.position).normalized * speed,
+            ForceMode2D.Force
+        ); // left right
+        rb.AddForce(
+            jump * strength,
+            ForceMode2D.Impulse
+        ); // jump
+        jump = Vector2.zero;
+        //rb.velocity = (Camera.main.ScreenToWorldPoint(Input.mousePosition) - fox.transform.position).normalized*20 * speed;
     }    
     void Update()
     {
