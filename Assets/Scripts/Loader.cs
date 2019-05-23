@@ -17,6 +17,11 @@ public static class Loader
     {
         return s.Split(new[]{' '}, StringSplitOptions.RemoveEmptyEntries);
     }
+
+    static public void Delete(string name)
+    {
+        if(File.Exists(@fold + name)) File.Delete(@fold + name);
+    }
     static public void Open(string name)
     {
         if(!File.Exists(@fold + name)) return;
@@ -27,23 +32,22 @@ public static class Loader
         foreach(var line in code)
         {
             string[] s = splitLine(line);
-            if(s.Length == 2) 
-            {
-                if(vec.Count != 0)
-                {
-                    DrawLine("plat", vec.ToArray(), width, Tools.mat, tr);
-                    vec.Clear();
-                }
-                t = (Tool)float.Parse(s[0]);
-                width = float.Parse(s[1]);
-            }
             if(s.Length == 3) vec.Add(new Vector3(
                 float.Parse(s[0]),
                 float.Parse(s[1]),
                 float.Parse(s[2])
             ));
+            if(s.Length == 2) 
+            {
+                t = (Tool)float.Parse(s[0]);
+                width = float.Parse(s[1]);
+                if(vec.Count != 0)
+                {
+                    DrawLine("plat", vec.ToArray(), width, Tools.Mat(t), tr);
+                    vec.Clear();
+                }
+            }
         }
-        DrawLine("plat", vec.ToArray(), width, Tools.mat, tr);
     }
     static public void Save(string name) 
     {
@@ -54,8 +58,8 @@ public static class Loader
     }
     static public void Update(Vector3[] vec, float width, Tool t)
     {
-        cur += "\n" + (int)t + " " + width + "\n";
         foreach(var a in vec) cur += a.x + " " + a.y + " " + a.z + "\n";
+        cur += "\n" + (int)t + " " + width + "\n";
     }
     static public GameObject DrawLine(string name, Vector3[] vec, float width, Material mat, Transform p = null)
     {
@@ -76,7 +80,7 @@ public static class Loader
         block.layer = 10;
         return block;
     }
-    static public Mesh MakeMesh(Vector3[] vec, float width, out Vector2[] col)
+    static public Mesh MakeMesh(Vector3[] vec, float width, out Vector2[] col) // need to be better
     {
         var vert = new Vector3[2 * vec.Length];
         var uv   = new Vector2[2 * vec.Length];
@@ -85,11 +89,6 @@ public static class Loader
         if(vec.Length==1) return null;
         Vector3 norm; for(int i=0; i<vec.Length; i++)
         {
-            if(
-                i!=0 && 
-                i!=vec.Length-1 && 
-                Vector3.Angle(vec[i]-vec[i-1], vec[i+1]-vec[i]) > 45F 
-            ) return null;
             if(i+1==vec.Length) norm = new Vector3(
                  (vec[i]-vec[i-1]).y,
                 -(vec[i]-vec[i-1]).x

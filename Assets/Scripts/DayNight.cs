@@ -5,11 +5,23 @@ using UnityEngine;
 public class DayNight : MonoBehaviour
 {
     public float tDana = 24.0F;
-    private Transform bg;
-    void Start()
+    private static Transform _bg;
+    public static Transform bg
     {
-        bg = GameObject.FindWithTag("Background").GetComponent<Transform>();
-        if(tDana == 0.0F) Debug.Log("trajanje dana 0!");
+        get { if(!_bg) _bg = GameObject.FindWithTag("Background").GetComponent<Transform>(); return _bg; }
+    }
+    public static float rot
+    {
+        get => bg.rotation.ToEuler().z;
+    }
+    void Start() { if(tDana == 0.0F) Debug.Log("trajanje dana 0!"); }
+    public static bool isDay()
+    {
+        return rot < 0.0F;
+    }
+    public static bool isNight()
+    {
+        return rot > 0.0F;
     }
     void Update()
     {

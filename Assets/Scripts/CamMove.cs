@@ -8,10 +8,13 @@ public class CamMove : MonoBehaviour
     public float rad;
     [HideInInspector]
     public float phi;
-    private Transform tr;
+    private Transform _tr;
+    public Transform tr
+    {
+        get { if(!_tr) _tr = GetComponent<Transform>(); return _tr; }
+    }
     void Start()
     {
-        tr = GetComponent<Transform>();
         rad = tr.position.magnitude;
         phi = Mathf.Atan2(tr.position.y, tr.position.x);
     }

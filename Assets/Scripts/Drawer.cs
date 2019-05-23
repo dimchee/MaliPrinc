@@ -11,6 +11,7 @@ public class Line : MonoBehaviour
     {
         get { if(!_line) _line = GetComponent<LineRenderer>(); return _line; }
     }
+    public void Start() { line.Simplify(1000000000.0F); }
     public void Add(Vector2 pos)
     {
         if(line) line.SetPosition(line.positionCount++, pos);
@@ -37,8 +38,6 @@ public static class Drawer
             return _mat; 
         }
     }
-    private static string[] gcode;
-
     public static GameObject MakeLine(string name, Vector2 pos)
     {
         var line = new GameObject(
@@ -70,7 +69,6 @@ public static class Drawer
         return line;
     }
     private static GameObject Mline;
-
     public static void Update(Vector2 mPos) 
     {
         if(Input.GetMouseButtonDown(0))
