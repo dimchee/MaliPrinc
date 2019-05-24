@@ -18,7 +18,7 @@ public class Terrain : MonoBehaviour
     }
     Vector3 disp(Vector3 vec, float phi)
     {
-        return vec *  (200 + Mathf.Sin(phi*30)) / 200;
+        return vec *  (500 + Mathf.Sin(phi*30)) / 500;
     }
     void Start()
     {

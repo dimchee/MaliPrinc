@@ -68,7 +68,7 @@ public static class Drawer
         rend.colorGradient = grad;
         return line;
     }
-    private static GameObject Mline;
+    public static GameObject Mline;
     public static void Update(Vector2 mPos) 
     {
         if(Input.GetMouseButtonDown(0))

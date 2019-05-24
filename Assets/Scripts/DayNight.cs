@@ -12,7 +12,7 @@ public class DayNight : MonoBehaviour
     }
     public static float rot
     {
-        get => bg.rotation.ToEuler().z;
+        get => bg.rotation.eulerAngles.z;
     }
     void Start() { if(tDana == 0.0F) Debug.Log("trajanje dana 0!"); }
     public static bool isDay()

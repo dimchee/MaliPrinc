@@ -4,6 +4,15 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public float health;
+    public float penCap;
+    public float eraserCap;
+
+    public int lvlCount;
+    public Sprite lvlSprite;
+
+    public float jumpCD;
+    public float ranjivost = 1.0F;
     public float speed = 1.0F;
     public float strength = 1.0F;
     public float onGround = 0.4F;
@@ -20,19 +29,21 @@ public class Player : MonoBehaviour
     {
         get { if(!_tr) _tr = player.GetComponent<Transform>(); return _tr; }
     }
-    private Vector2 input;
+    private float input;
     private Vector2 jump;
     private Transform cam;
     private CamMove camMove;
+    private float last;
 
     void Start() 
     {
         cam = Camera.main.GetComponent<Transform>();
         rb = player.GetComponent<Rigidbody2D>();
         camMove = Camera.main.GetComponent<CamMove>();
-        input = Vector2.zero; jump = Vector2.zero;
+        input = 0.0F; jump = Vector2.zero;
+        last = 0.0F;
     }
-    public void Move(Vector2 vec) { input = vec; }
+    public void Move(float vec) { input = vec; }
     public void Jump() { jump = rb.position.normalized; }
 
     void FixedUpdate() 
@@ -42,17 +53,16 @@ public class Player : MonoBehaviour
             -gravity * rb.position.normalized, 
             ForceMode2D.Force
         );// gravity
-        if(IsGrounded())
+        rb.velocity = input*cam.right*speed 
+        + (rb.velocity.x*cam.up.x + rb.velocity.y*cam.up.y)*cam.up;
+        if(IsGrounded() && (Time.time - last > jumpCD))
         {
-            rb.AddForce(
-                input.x * speed * cam.right, 
-                ForceMode2D.Force
-            ); // left right
-            rb.AddForce(
+          	rb.AddForce(
                 jump * strength,
                 ForceMode2D.Impulse
             ); // jump
             jump = Vector2.zero;
+            last = Time.time;
         }
     }
     private bool IsGrounded() 

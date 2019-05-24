@@ -2,19 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
+using UnityEngine.SceneManagement;
 
 public enum Mode { Editor, Game };
 public class Controller : MonoBehaviour
 {
     public Mode Mode;
-    private Player player;
-    private Cursor curs;
-    private CamMove cam;
+    public static Player player;
+    public static CamMove cam;
+    public static bool isPaused;
+
     void Start()
     {
         player = GetComponent<Player>();
         cam = Camera.main.GetComponent<CamMove>();
-        curs = GetComponent<Cursor>();
         switch(Mode)
         {
             case Mode.Game:
@@ -23,45 +24,36 @@ public class Controller : MonoBehaviour
             case Mode.Editor:
                 Destroy(player.player);
                 Destroy(player);
-                curs.cur.GetComponent<Collider2D>().isTrigger = true;
+                Cursor.cur.GetComponent<Collider2D>().isTrigger = true;
                 break;
         }
     }
+    
+    //if(DayNight.isDay())Debug.Log("Day!");
+    //if(DayNight.isNight())Debug.Log("Night!");
     void Update()
     {
-        Drawer.Update(curs.cur.transform.position);
-        if(DayNight.isDay())Debug.Log("Day!");
-        if(DayNight.isNight())Debug.Log("Night!");
-    }
-    void FixedUpdate()
-    {
+        if(player.health == 0.0F) SceneManager.LoadScene(0);
         switch(Mode)
         {
             case Mode.Game:
-                if(Input.GetKeyDown(KeyCode.E))
-                    Tools.ChTool(Tool.eraser);
-                if(Input.GetKeyDown(KeyCode.Q))
-                    Tools.ChTool(Tool.ground);
                 if(Input.GetKeyDown("space"))
                     player.Jump();
                 if(Input.GetKeyDown(KeyCode.LeftShift))
                     Portal.enable = true;
-                player.Move(new Vector2(
-                    Input.GetAxisRaw("Horizontal"), 
-                    0 //Input.GetAxisRaw("Vertical")
-                ));
-                cam.phi += 0.0001F * Mathf.Pow(Vector2.SignedAngle(cam.tr.position, player.tr.position), 3.0F);
+                //if(Input.GetKeyDown(KeyCode.Escape))
+                	//int a = 4; // pauseMenu
+                player.Move(Input.GetAxisRaw("Horizontal"));
+                cam.phi += 0.0005F * Mathf.Pow(Vector2.SignedAngle(cam.tr.position, player.tr.position), 3.0F);
                 break;
             case Mode.Editor:
                 cam.phi -= Input.GetAxisRaw("Horizontal")*0.1F;
                 if(Input.GetKeyDown(KeyCode.P))
                     Loader.Save("test.lvl");
-                if(Input.GetKeyDown(KeyCode.E))
-                    Tools.ChTool(Tool.eraser);
-                if(Input.GetKeyDown(KeyCode.Q))
-                    Tools.ChTool(Tool.ground);
-                if(Input.GetKeyDown(KeyCode.T))
-                    Tools.ChTool(Tool.trnje);
+                //if(Input.GetKeyDown(KeyCode.E))
+                //    Tools.ChTool(Tool.eraser);
+                //if(Input.GetKeyDown(KeyCode.Q))
+                //    Tools.ChTool(Tool.pen);
                 break;
         }
     }

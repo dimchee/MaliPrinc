@@ -26,7 +26,7 @@ public static class Loader
     {
         if(!File.Exists(@fold + name)) return;
         string[] code = File.ReadAllLines(@fold + name);
-        float width = 0F; Tool t;
+        float width = 0F; Mat mat;
         List<Vector3> vec = new List<Vector3>();
         var tr = (new GameObject(name)).GetComponent<Transform>();
         foreach(var line in code)
@@ -39,11 +39,11 @@ public static class Loader
             ));
             if(s.Length == 2) 
             {
-                t = (Tool)float.Parse(s[0]);
+                mat = (Mat)float.Parse(s[0]);
                 width = float.Parse(s[1]);
                 if(vec.Count != 0)
                 {
-                    DrawLine("plat", vec.ToArray(), width, Tools.Mat(t), tr);
+                    DrawLine("plat", vec.ToArray(), width, Tools.Mater(mat), tr);
                     vec.Clear();
                 }
             }
@@ -59,7 +59,7 @@ public static class Loader
     static public void Update(Vector3[] vec, float width, Tool t)
     {
         foreach(var a in vec) cur += a.x + " " + a.y + " " + a.z + "\n";
-        cur += "\n" + (int)t + " " + width + "\n";
+        cur += (int)t + " " + width + "\n\n\n";
     }
     static public GameObject DrawLine(string name, Vector3[] vec, float width, Material mat, Transform p = null)
     {
