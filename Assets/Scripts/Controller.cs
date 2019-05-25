@@ -12,6 +12,12 @@ public class Controller : MonoBehaviour
     public static CamMove cam;
     public static bool isPaused;
 
+    private static GameObject _pM;
+    public static GameObject pauseMenu
+    {
+        get{ if(!_pM) _pM = GameObject.FindWithTag("PauseMenu"); return _pM; }
+    }
+
     void Start()
     {
         player = GetComponent<Player>();
@@ -27,13 +33,23 @@ public class Controller : MonoBehaviour
                 Cursor.cur.GetComponent<Collider2D>().isTrigger = true;
                 break;
         }
+
+        Pause(); Pause();
+        // Pause();
+    }
+
+    public static void Pause()
+    {
+        isPaused = !isPaused;
+        pauseMenu.SetActive(isPaused);
+        Debug.Log("Here");
     }
     
     //if(DayNight.isDay())Debug.Log("Day!");
     //if(DayNight.isNight())Debug.Log("Night!");
     void Update()
     {
-        if(player.health == 0.0F) SceneManager.LoadScene(0);
+        if(player.health == 0.0F) SceneManager.LoadScene(0); 
         switch(Mode)
         {
             case Mode.Game:
@@ -41,10 +57,10 @@ public class Controller : MonoBehaviour
                     player.Jump();
                 if(Input.GetKeyDown(KeyCode.LeftShift))
                     Portal.enable = true;
-                //if(Input.GetKeyDown(KeyCode.Escape))
-                	//int a = 4; // pauseMenu
                 player.Move(Input.GetAxisRaw("Horizontal"));
                 cam.phi += 0.0005F * Mathf.Pow(Vector2.SignedAngle(cam.tr.position, player.tr.position), 3.0F);
+                if (Input.GetKeyDown(KeyCode.Escape))
+                    Pause();
                 break;
             case Mode.Editor:
                 cam.phi -= Input.GetAxisRaw("Horizontal")*0.1F;

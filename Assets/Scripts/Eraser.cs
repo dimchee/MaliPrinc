@@ -27,5 +27,6 @@ public class Eraser : MonoBehaviour
         if(other.gameObject.tag != "Player") return;
         other.gameObject.GetComponent<Rigidbody2D>().drag = 0.3F;
         Unutra = false;
+        Controller.player.eraserCap -= 10;
     }
 }

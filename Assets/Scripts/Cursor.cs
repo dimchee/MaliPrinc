@@ -31,6 +31,7 @@ public class Cursor : MonoBehaviour
             return _cur;
         }
     }
+    void Start() { Tool = Tool.None; }
     private static SpriteRenderer _curRend;
     public static SpriteRenderer curRend
     {
@@ -49,7 +50,7 @@ public class Cursor : MonoBehaviour
     }
     void Update()
     {
-        Drawer.Update(cur.transform.position);
+        if(Tools.HasInk()) Drawer.Update(cur.transform.position);
         if(Drawer.Mline != null) cur.GetComponent<CircleCollider2D>().enabled = true;
         else                     cur.GetComponent<CircleCollider2D>().enabled = false;
     }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Canvas : MonoBehaviour
 {
@@ -41,12 +42,6 @@ public class Canvas : MonoBehaviour
         beerCountText.text = player.lvlCount + " / 3";
     }
 
-    public static void Pause()
-    {
-    	Controller.isPaused = !Controller.isPaused;
-    	GameObject.FindWithTag("PauseMenu").SetActive(Controller.isPaused);
-    }
-
 
     public void Clicked(int index) 
     {
@@ -61,5 +56,13 @@ public class Canvas : MonoBehaviour
             taken[index] = true;
             placeHolders[index].sprite = Cursor.Del(out tool[index]);
         }
+    }
+
+    public void Restart() {
+        SceneManager.LoadScene(1);
+    }
+
+    public void Quit() {
+        Application.Quit();
     }
 }

@@ -71,14 +71,21 @@ public static class Drawer
     public static GameObject Mline;
     public static void Update(Vector2 mPos) 
     {
-        if(Input.GetMouseButtonDown(0))
-            Mline = MakeLine("mouse", mPos);
-        if(Input.GetMouseButton(0))
-            Mline.GetComponent<Line>().Add(mPos);
-        if(Input.GetMouseButtonUp(0))
+        if(Cursor.Tool == Tool.Pen)
         {
-            var vec = Mline.GetComponent<Line>().Vert();
-            Object.Destroy(Mline); Tools.Draw(vec, 0.1F); 
+            if(Input.GetMouseButtonDown(0))
+                Mline = MakeLine("mouse", mPos);
+        }
+        if(Mline)
+        {
+            if(Input.GetMouseButton(0))
+                Mline.GetComponent<Line>().Add(mPos);
+            if(Input.GetMouseButtonUp(0))
+            {
+                var vec = Mline.GetComponent<Line>().Vert();
+                for(int i=1; i<vec.Length; i++)  Controller.player.penCap -= (vec[i]-vec[i-1]).magnitude*5;
+                Object.Destroy(Mline); Tools.Draw(vec, 0.1F); 
+            }
         }
     }
 }

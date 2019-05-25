@@ -26,4 +26,8 @@ public static class Tools
         }
         return null;
     }
+    public static bool HasInk()
+    {
+        return Controller.player.penCap > 0.0F;
+    }
 }

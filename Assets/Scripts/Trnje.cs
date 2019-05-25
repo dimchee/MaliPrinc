@@ -9,8 +9,11 @@ public class Trnje : MonoBehaviour
     public void FixedUpdate()
     {
         if (Unutra)
-            Controller.player.health = Mathf.Max(0, Controller.player.health - Time.deltaTime*Controller.player.ranjivost);
-        //if(Controller.player.health == 0.0F) Debug.Log("Mrtav si idiote!");
+            Controller.player.health = 
+            Mathf.Max( 0, 
+                Controller.player.health - 
+                Time.deltaTime*Controller.player.ranjivost
+            );
     }
 
     public void OnTriggerEnter2D(Collider2D other)
