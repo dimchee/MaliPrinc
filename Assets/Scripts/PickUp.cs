@@ -10,7 +10,6 @@ public class PickUp : MonoBehaviour
     public void Update()
     {
         if(!Unutra) return;
-        if(!Input.GetKeyDown(KeyCode.F)) return; 
         if(Cursor.HasSprite()) return;
         Cursor.Set(
        		GetComponent<SpriteRenderer>().sprite,

@@ -8,12 +8,13 @@ public class Trnje : MonoBehaviour
 
     public void FixedUpdate()
     {
-        if (Unutra)
-            Controller.player.health = 
-            Mathf.Max( 0, 
-                Controller.player.health - 
-                Time.deltaTime*Controller.player.ranjivost
-            );
+        if(!Unutra) return;
+        Controller.player.health = 
+        Mathf.Max( 0, 
+            Controller.player.health - 
+            Time.deltaTime*Controller.player.ranjivost
+        );
+        Player.jump = Vector2.zero;
     }
 
     public void OnTriggerEnter2D(Collider2D other)

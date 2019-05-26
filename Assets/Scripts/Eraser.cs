@@ -9,9 +9,14 @@ public class Eraser : MonoBehaviour
     void OnMouseDown() 
     {
         if(Cursor.Tool != Tool.Eraser) return;
-        if(!obj) { Object.Destroy(gameObject); return; }
-    	if(Unutra)
+        if(!obj) 
+        {
+            Controller.player.eraserCap -= 10; 
+            Object.Destroy(gameObject); return; 
+        }
+    	else if(Unutra)
     	{
+            Controller.player.eraserCap -= 5;
     		Controller.player.lvlCount++;
     		Object.Destroy(gameObject);	
     	}
@@ -19,14 +24,11 @@ public class Eraser : MonoBehaviour
     public void OnTriggerEnter2D(Collider2D other)
     {
         if(other.gameObject.tag != "Player") return;
-        other.gameObject.GetComponent<Rigidbody2D>().drag = 30.0F;
         Unutra = true;
     }
     public void OnTriggerExit2D(Collider2D other)
     {
         if(other.gameObject.tag != "Player") return;
-        other.gameObject.GetComponent<Rigidbody2D>().drag = 0.3F;
         Unutra = false;
-        Controller.player.eraserCap -= 10;
     }
 }

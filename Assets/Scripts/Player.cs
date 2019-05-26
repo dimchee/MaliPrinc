@@ -30,7 +30,7 @@ public class Player : MonoBehaviour
         get { if(!_tr) _tr = player.GetComponent<Transform>(); return _tr; }
     }
     private float input;
-    private Vector2 jump;
+    public static Vector2 jump;
     private Transform cam;
     private CamMove camMove;
     private float last;
@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
         Vector2[] vec = {tr.right, -tr.right};
         foreach(Vector2 a in vec)
             if(Physics2D.Raycast(
-                rb.position + down * 0.651f 
+                rb.position + down * 0.63f 
                             + a * 0.15f,
                 down, onGround
             ).collider != null) return  true;
@@ -84,7 +84,7 @@ public class Player : MonoBehaviour
         Vector2 pos  = tr.position;
         foreach(Vector2 a in vec) 
             Debug.DrawRay(
-                pos + down * 0.651f 
+                pos + down * 0.63f 
                     + a * 0.15f,
                 down*onGround, 
                 Color.red
